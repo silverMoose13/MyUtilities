@@ -9,7 +9,7 @@ import java.time.format.DateTimeFormatter;
 /**
  * The responsibility of this class is to provide various DateUtilities methods
  * so that other classes can use them without having to re-write new code. This
- * ensures consistency is achieved throughout the project.
+ * ensures consistency is achieved.
  *
  * @author Aaron
  * @version 1.0
@@ -26,7 +26,8 @@ public class DateUtilities {
     }
 
     /**
-     * This method converts a LocalDateTime object into a formatted string
+     * This method converts a LocalDateTime object into a formatted string using
+     * pattern passed in from the user.
      *
      * @param localDateTimeObject This object derives from the LocalDateTime
      * class
@@ -37,8 +38,8 @@ public class DateUtilities {
      * @throws IllegalArgumentException is thrown if either of the objects
      * passed in are null
      */
-    public final String getConvertedLocalDateTimeObjectToFormattedString(LocalDateTime localDateTimeObject,
-            DateTimeFormatterStrategy formatter) {
+    public final String getFormattedStringFromALocalDateTimeObject(LocalDateTime localDateTimeObject,
+            DateTimeFormatterStrategy formatter) throws IllegalArgumentException {
         if (localDateTimeObject == null || formatter == null) {
             throw new IllegalArgumentException("Error! Objects passed in must not be null.");
         }
@@ -46,8 +47,6 @@ public class DateUtilities {
         return dateTimeEntryWithFormatting;
     }
 
-    //Convert a formatted string to a LocalDateTime object
-    //the user passes in the formatted String
     /**
      * This method takes a formatted String value containing a date and time and
      * converts it to a LocalDateTime object
@@ -58,7 +57,7 @@ public class DateUtilities {
      * @throws IllegalArgumentException is thrown is the String value passed
      * in is null or empty
      */
-    public final LocalDateTime getConvertedFormattedStringToALocalDateTimeObject(String formattedDateTime) {
+    public final LocalDateTime getLocalDateTimeObjectFromAFormattedString(String formattedDateTime) {
         if (formattedDateTime == null || formattedDateTime.isEmpty()) {
             throw new IllegalArgumentException("Error! Value must not be null or empty.");
         }
@@ -75,7 +74,7 @@ public class DateUtilities {
      * @throws IllegalArgumentException is thrown if either of the objects
      * passed in are null
      */
-    public final Duration getDateDifference(LocalDate dateOne, LocalDate dateTwo) {
+    public final Duration getDateDifference(LocalDate dateOne, LocalDate dateTwo) throws IllegalArgumentException {
         if (dateOne == null || dateTwo == null) {
             throw new IllegalArgumentException("Error! Objects passed in must not be null.");
         }
@@ -92,7 +91,7 @@ public class DateUtilities {
      * @throws IllegalArgumentException is thrown if either of the objects
      * passed in are null
      */
-    public final Duration getTimeDifference(LocalTime timeOne, LocalTime timeTwo) {
+    public final Duration getTimeDifference(LocalTime timeOne, LocalTime timeTwo) throws IllegalArgumentException {
         if (timeOne == null || timeTwo == null) {
             throw new IllegalArgumentException("Error! Objects passed in must not be null.");
         }
@@ -108,7 +107,8 @@ public class DateUtilities {
      * @throws IllegalArgumentException is thrown if either of the objects
      * passed in are null
      */
-    public final Duration getDateAndTimeDifference(LocalDateTime dateTimeOne, LocalDateTime dateTimeTwo) {
+    public final Duration getDateAndTimeDifference(LocalDateTime dateTimeOne, LocalDateTime dateTimeTwo)
+        throws IllegalArgumentException {
         if (dateTimeOne == null || dateTimeTwo == null) {
             throw new IllegalArgumentException("Error! Objects passed in must not be null.");
         }
@@ -137,7 +137,8 @@ public class DateUtilities {
      * @throws IllegalArgumentException is thrown if the object
      * passed in is null
      */
-    public final LocalDateTime getFutureOrPastDate(String date, DateTimeFormatterStrategy formatter) {
+    public final LocalDateTime getFutureOrPastDate(String date, DateTimeFormatterStrategy formatter) 
+        throws IllegalArgumentException {
         if (date == null || date.isEmpty()) {
             throw new IllegalArgumentException("Error! Value must not be null or empty.");
         }
@@ -146,7 +147,7 @@ public class DateUtilities {
         }
         //get the current date time and convert it to a String
         LocalDateTime currentDate = LocalDateTime.now();
-        String formattedCurrentDate = getConvertedLocalDateTimeObjectToFormattedString(currentDate, formatter);
+        String formattedCurrentDate = getFormattedStringFromALocalDateTimeObject(currentDate, formatter);
 
         //take the passed in date and format and is formatted the same way
         date = formatter.getFormattedNumericMonthDayYearDateTime().toString();
@@ -156,7 +157,7 @@ public class DateUtilities {
         if (date.matches(formattedCurrentDate)) {
             throw new IllegalArgumentException("Error! The date you provided is not of the past of the future.");
         }
-        LocalDateTime nonPresentDate = getConvertedFormattedStringToALocalDateTimeObject(date);
+        LocalDateTime nonPresentDate = getLocalDateTimeObjectFromAFormattedString(date);
         return nonPresentDate;
     }
 }
