@@ -32,8 +32,7 @@ public class DateUtilities {
      * @param localDateTimeObject This object derives from the LocalDateTime
      * class
      * @param formatter This object derives from the DateTimeFormatterStrategy
-     * interface which provides abstract methods for formatting the date and
-     * times
+     * interface which provides the user provided format
      * @return A formatted String containing a date and time
      * @throws IllegalArgumentException is thrown if either of the objects
      * passed in are null
@@ -74,6 +73,8 @@ public class DateUtilities {
      * @throws IllegalArgumentException is thrown if either of the objects
      * passed in are null
      */
+    
+    //fix this to not have Duration being returned
     public final Duration getDateDifference(LocalDate dateOne, LocalDate dateTwo) throws IllegalArgumentException {
         if (dateOne == null || dateTwo == null) {
             throw new IllegalArgumentException("Error! Objects passed in must not be null.");
