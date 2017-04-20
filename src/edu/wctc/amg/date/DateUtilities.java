@@ -9,7 +9,7 @@ import java.time.format.DateTimeFormatter;
 /**
  * The responsibility of this class is to provide various DateUtilities methods
  * so that other classes can use them without having to re-write new code. This
- * ensures consistency is achieved.
+ * ensures consistency and reliability is achieved.
  *
  * @author Aaron
  * @version 1.0
@@ -34,8 +34,8 @@ public class DateUtilities {
      * @param formatter This object derives from the DateTimeFormatterStrategy
      * interface which provides the user provided format
      * @return A formatted String containing a date and time
-     * @throws IllegalArgumentException is thrown if either of the objects
-     * passed in are null
+     * @throws IllegalArgumentException is thrown if any of the objects passed
+     * in are null
      */
     public final String getFormattedStringFromALocalDateTimeObject(LocalDateTime localDateTimeObject,
             DateTimeFormatterStrategy formatter) throws IllegalArgumentException {
@@ -53,10 +53,11 @@ public class DateUtilities {
      * @param formattedDateTime The user passes in a formatted String that
      * contains a date and time
      * @return A LocalDateTime object is returned
-     * @throws IllegalArgumentException is thrown is the String value passed
-     * in is null or empty
+     * @throws IllegalArgumentException is thrown is the String value passed in
+     * is null or empty
      */
-    public final LocalDateTime getLocalDateTimeObjectFromAFormattedString(String formattedDateTime) {
+    public final LocalDateTime getLocalDateTimeObjectFromAFormattedString(String formattedDateTime)
+            throws IllegalArgumentException {
         if (formattedDateTime == null || formattedDateTime.isEmpty()) {
             throw new IllegalArgumentException("Error! Value must not be null or empty.");
         }
@@ -65,60 +66,71 @@ public class DateUtilities {
     }
 
     /**
-     * This method gets the date difference between two LocalDate objects
+     * This method gets the date difference in days between two LocalDate
+     * objects
+     *
      * @param dateOne A LocalDate object
      * @param dateTwo A LocalDate object
-     * @return A Duration object will be returned. This value will contain the
-     * date difference between two LocalDate objects
+     * @return A long value in days will be returned. This value will contain
+     * the date difference between two LocalDate objects
      * @throws IllegalArgumentException is thrown if either of the objects
      * passed in are null
      */
-    
-    //fix this to not have Duration being returned
-    public final Duration getDateDifference(LocalDate dateOne, LocalDate dateTwo) throws IllegalArgumentException {
+    public final long getTimeDifferenceInDaysBetweenTwoLocalDateObjects(LocalDate dateOne, LocalDate dateTwo)
+            throws IllegalArgumentException {
         if (dateOne == null || dateTwo == null) {
             throw new IllegalArgumentException("Error! Objects passed in must not be null.");
         }
         Duration dateDifference = Duration.between(dateOne, dateOne);
-        return dateDifference;
+        long dateDifferenceInDays = dateDifference.toDays();
+        return dateDifferenceInDays;
     }
 
     /**
-     * This method gets the time difference between two LocalTime objects
+     * This method gets the time difference in hours between two LocalTime
+     * objects
+     *
      * @param timeOne A LocalTime object
      * @param timeTwo A LocalTime object
-     * @return The time difference between two times is returned as a Duration
-     * object
+     * @return The time difference between two times is returned as a long value
+     * in hours.
      * @throws IllegalArgumentException is thrown if either of the objects
      * passed in are null
      */
-    public final Duration getTimeDifference(LocalTime timeOne, LocalTime timeTwo) throws IllegalArgumentException {
+    public final long getTimeDifferenceInHoursBetweenTwoLocalTimeObjects(LocalTime timeOne, LocalTime timeTwo) throws IllegalArgumentException {
         if (timeOne == null || timeTwo == null) {
             throw new IllegalArgumentException("Error! Objects passed in must not be null.");
         }
         Duration timeDifference = Duration.between(timeOne, timeOne);
-        return timeDifference;
+        long timeDifferenceInHours = timeDifference.toHours();
+        return timeDifferenceInHours;
     }
 
     /**
-     * This method gets the time and date difference between two LocalDateTime objects
+     * This method gets the overall between time difference in minutes between
+     * two LocalDateTime objects
+     *
      * @param dateTimeOne A LocalDateTime object
      * @param dateTimeTwo A LocalDateTime object
-     * @return The date and time difference between two LocalDateTimeObjects are returned as a Duration object
+     * @return The time difference between two LocalDateTimeObjects are returned
+     * as a long
      * @throws IllegalArgumentException is thrown if either of the objects
      * passed in are null
      */
-    public final Duration getDateAndTimeDifference(LocalDateTime dateTimeOne, LocalDateTime dateTimeTwo)
-        throws IllegalArgumentException {
+    public final long getTimeDifferenceInMinutesUsingLocalDateTimeObjects(LocalDateTime dateTimeOne,
+            LocalDateTime dateTimeTwo) throws IllegalArgumentException {
         if (dateTimeOne == null || dateTimeTwo == null) {
             throw new IllegalArgumentException("Error! Objects passed in must not be null.");
         }
-        Duration dateAndTimeDifference = Duration.between(dateTimeOne, dateTimeTwo);
-        return dateAndTimeDifference;
+        Duration timeDifference = Duration.between(dateTimeOne, dateTimeTwo);
+        long timeDifferenceInMinutes = timeDifference.toMinutes();
+        return timeDifferenceInMinutes;
     }
 
     /**
-     * This method formats the date using a numeric month day year format ("MM-dd-yyyy")
+     * This method formats the date using a numeric month day year format:
+     * MM-dd-yyyy
+     *
      * @return A DateTimeFormatter object is returned with a formatted date
      */
     public final DateTimeFormatter getNumericMonthDayYearFormat() {
@@ -126,25 +138,21 @@ public class DateUtilities {
         return format;
     }
 
-    //Get a LocalDate or LocalDateTime object for a date or time in the
-    //future, or in the past
-    
     /**
      * This method gets a future or past date
+     *
      * @param date Contains a String date
      * @param formatter Abstraction of a DateTimeFormatterStrategy object
      * @return A LocalDateTime object containing a past or future date
-     * @throws IllegalArgumentException is thrown if String date value is null or empty
-     * @throws IllegalArgumentException is thrown if the object
-     * passed in is null
+     * @throws IllegalArgumentException is thrown if String date value is null
+     * or empty
+     * @throws IllegalArgumentException is thrown if the object passed in is
+     * null or empty
      */
-    public final LocalDateTime getFutureOrPastDate(String date, DateTimeFormatterStrategy formatter) 
-        throws IllegalArgumentException {
-        if (date == null || date.isEmpty()) {
+    public final LocalDateTime getFutureOrPastDate(String date, DateTimeFormatterStrategy formatter)
+            throws IllegalArgumentException {
+        if (date == null || formatter == null || date.isEmpty()) {
             throw new IllegalArgumentException("Error! Value must not be null or empty.");
-        }
-        if (formatter == null) {
-            throw new IllegalArgumentException("Error! Object must not be null.");
         }
         //get the current date time and convert it to a String
         LocalDateTime currentDate = LocalDateTime.now();

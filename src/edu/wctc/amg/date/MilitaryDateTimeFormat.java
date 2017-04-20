@@ -9,6 +9,7 @@ import java.time.format.DateTimeFormatter;
  *
  * @author Aaron
  * @version 1.0
+ * @since 1.8
  */
 public class MilitaryDateTimeFormat implements DateTimeFormatterStrategy {
 
